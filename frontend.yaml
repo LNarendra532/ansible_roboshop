@@ -1,0 +1,56 @@
+- name: frontend nginx microservice
+  hosts: frontend
+  become: yes
+  tasks:
+  - name: module disable node
+    ansible.builtin.command: dnf module disable nginx -y
+
+  - name: module enable nginx:20
+    ansible.builtin.command: dnf module enable nginx:20 -y
+
+  - name: install nginx
+    ansible.builtin.dnf:
+      name: nginx
+      state: present
+
+  - name: Start service httpd, if not started
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: remove 'html' directory for existing content
+    ansible.builtin.file:
+      path: /usr/share/nginx/html
+      state: absent
+
+  - name: create a html directory for copy new content
+    ansible.builtin.file:
+      path: /usr/share/nginx/html
+      state: directory
+
+  - name: Downloadinf user zip file
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+      dest: /tmp/frontend.zip
+
+  - name: Unarchive a user file
+    ansible.builtin.unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html 
+      remote_src: yes
+  
+  - name: remove 'html' directory for existing content
+    ansible.builtin.file:
+      path: /etc/nginx/nginx.conf
+      state: absent
+
+  - name: copy mongodb repo
+    ansible.builtin.copy:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+  - name: Restart service httpd, in all cases
+    ansible.builtin.service:
+      name: nginx
+      state: restarted

@@ -1,5 +1,5 @@
-- name: Catalouge microservice
-  hosts: catalouge
+- name: catalogue microservice
+  hosts: catalogue
   become: yes
   tasks:
   - name: module disable node
@@ -13,7 +13,7 @@
       name: nodejs
       state: present
 
-  - name: creating roboshop user
+  - name: ccreate roboshop system user
     ansible.builtin.user:
       name: roboshop
       shell: /sbin/nologin
@@ -33,14 +33,14 @@
 
    # this module thinks file exist on ansible control server, needs to extract on to remote machine
   # remote_src: yes means files already exist in catalogue server
-  - name: Unarchive a catalouge file
+  - name: Unarchive a catalogue file
     ansible.builtin.unarchive:
       src: /tmp/catalogue.zip
       dest: /app
       remote_src: yes
 
   
-  - name: Install "coffee-script" node.js package.
+  - name: Install depencies.
     community.general.npm:
       path: /app
 
