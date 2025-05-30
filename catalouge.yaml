@@ -1,5 +1,6 @@
 - name: Catalouge microservice
   hosts: catalouge
+  become: yes
   tasks:
   - name: module disable node
     ansible.builtin.command: dnf module disable nodejs -y
