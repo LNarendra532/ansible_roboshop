@@ -1,4 +1,4 @@
-- name: Install mogodb
+- name: Install mongodb
   become: yes
   hosts: mongodb
   tasks:
@@ -7,7 +7,7 @@
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
 
-  - name: Install mogodb
+  - name: Install mongodb
     ansible.builtin.dnf:
       name: mongodb-org
       state: present
@@ -24,7 +24,7 @@
       regexp: '127.0.0.1'
       replace: '0.0.0.0'
       
-  - name: restart mongodb
+  - name: restart mongod
     ansible.builtin.service:
       name: mongod
       state: restarted
