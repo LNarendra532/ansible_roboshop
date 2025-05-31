@@ -5,7 +5,7 @@
   - name: module disable node
     ansible.builtin.command: dnf module disable nginx -y
 
-  - name: module enable "nginx:20"
+  - name: module enable "nginx:1.24"
     ansible.builtin.command: dnf module enable nginx:1.24 -y
 
   - name: install nginx
@@ -29,18 +29,18 @@
       path: /usr/share/nginx/html
       state: directory
 
-  - name: Downloadinf user zip file
+  - name: Downloadinf frontend zip file
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
       dest: /tmp/frontend.zip
 
-  - name: Unarchive a user file
+  - name: Unarchive a frontend file
     ansible.builtin.unarchive:
       src: /tmp/frontend.zip
       dest: /usr/share/nginx/html 
       remote_src: yes
   
-  - name: remove 'html' directory for existing content
+  - name: remove ' for existing nginx.conf
     ansible.builtin.file:
       path: /etc/nginx/nginx.conf
       state: absent
