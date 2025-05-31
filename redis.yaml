@@ -3,10 +3,10 @@
   become: yes
   tasks:
   - name: Disable Redis module
-    ansible.builtin.command: dnf module disable redis -y
+    ansible.builtin.shell: dnf module disable redis -y
 
   - name: enble redis module
-    anible.builtin.command: dnf module enable redis:7 -y
+    anible.builtin.shell: dnf module enable redis:7 -y
   
   - name: installing redis
     anible.builtin.dnf:
