@@ -5,21 +5,19 @@
   - name: Disable Redis module
     ansible.builtin.command: dnf module disable redis -y
 
-
-  - name: dnf module disable redis
+  - name: enble redis module
     anible.builtin.command: dnf module enable redis:7 -y
   
-  - name: dnf module disable redis
+  - name: installing redis
     anible.builtin.dnf:
       name: redis
       state: present
     
-  - name: Replae the ip address to 0.0.0.0
+  - name: Replaethe ip address to 0.0.0.0
     ansible.builtin.replace:
       path: /etc/redis/redis.conf
       regexp: '127.0.0.1'
       replace: '0.0.0.0'
-
 
   - name: Replace a specific line in a config file
     ansible.builtin.lineinfile:
