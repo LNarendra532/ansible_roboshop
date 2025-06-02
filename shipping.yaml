@@ -72,16 +72,6 @@
       enabled: yes
 
 
-  # - name: Load Schema, Schema in database
-  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/schema.sql
-
-  # - name: Create app user, MySQL expects a password authentication, Hence we need to create the user in mysql database for shipping app to connect.
-  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }}< /app/db/app-user.sql
-
-  # - name: Load Master Data, This includes the data of all the countries and their cities with distance to those cities.
-  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/master-data.sql
-
-
   - name: import the db with root db_user
     tags: 
     - import   # we can run required part the of snippet by using the tags
@@ -103,5 +93,9 @@
     ansible.builtin.service:
       name: shipping
       state: restarted
+
+
+  # ansible-playbook -i inventory.ini shipping.yaml &>> /home/ec2-user/shipping.log & - this will run in backgroupnd
+    # we can store our logs 
 
     
