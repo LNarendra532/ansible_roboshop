@@ -18,12 +18,19 @@
       state: started
       enabled: yes
 
-  - name: add roboshop user
-    ansible.builtin.shell: rabbitmqctl add_user roboshop roboshop123
+  # - name: add roboshop user
+  #   ansible.builtin.command: rabbitmqctl add_user roboshop roboshop123
 
-  - name: rabbitmq permissions
-    ansible.builtin.shell: rrabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-
+  - name: rabbitmq permissionsdd user to server and assign full access control on / vhost.The user doesn't have permission rules for other vhosts
+    community.rabbitmq.rabbitmq_user:
+      user: roboshop
+      password: roboshop123
+      permissions:
+        - vhost: /
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .*
+      state: present
 
 
     

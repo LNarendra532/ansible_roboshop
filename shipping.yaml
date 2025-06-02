@@ -1,10 +1,6 @@
 - name: shipping microservice
   hosts: shipping
   become: yes
-  vars_prompt:
-  - name: PASSWORD
-    prompt: Please enter your passwordCRoboCShop@1C
-    private: true
   tasks:
   - name: install nodejs and mysql
     ansible.builtin.dnf:
@@ -13,6 +9,14 @@
     loop:
       - maven
       - mysql
+
+  - name: install PyMySQL and cryptography  dependecies for python_with_mysql 
+    ansible.builtin.pip:
+      name: "{{ item }}"
+      executable: pip3.9
+    loop:
+    - cryptography
+    - PyMySQL
 
   - name: create roboshop system shipping
     ansible.builtin.user:
@@ -41,10 +45,16 @@
       remote_src: yes
 
   - name: Run Maven build using shell
-    ansible.builtin.shell: mvn clean package
+    ansible.builtin.command: mvn clean package
+    args:
+      chdir: /app     # it will move tot he app directory do the prcess and come out of it .
 
   - name: Rename or move a file using the shell module
-    ansible.builtin.shell: mv target/shipping-1.0.jar shipping.jar 
+    ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
+    args:
+      chdir: /app 
+  
+
 
   - name: copy shipping.service file
     ansible.builtin.copy:
@@ -62,11 +72,36 @@
       enabled: yes
 
 
-  - name: Load Schema, Schema in database
-    ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/schema.sql
+  # - name: Load Schema, Schema in database
+  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/schema.sql
 
-  - name: Create app user, MySQL expects a password authentication, Hence we need to create the user in mysql database for shipping app to connect.
-    ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }}< /app/db/app-user.sql
+  # - name: Create app user, MySQL expects a password authentication, Hence we need to create the user in mysql database for shipping app to connect.
+  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }}< /app/db/app-user.sql
 
-  - name: Load Master Data, This includes the data of all the countries and their cities with distance to those cities.
-    ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/master-data.sql
+  # - name: Load Master Data, This includes the data of all the countries and their cities with distance to those cities.
+  #   ansible.builtin.shell: mysql -h mysql.narendaws-84s.site -uroot -p{{ PASSWORD }} < /app/db/master-data.sql
+
+
+  - name: import the db with root db_user
+    tags: 
+    - import   # we can run required part the of snippet by using the tags
+    community.mysql.mysql_db:
+      name: all #                     name may only be provided if state is dump or import.
+      login_user: root
+      login_password: RoboShop@1
+      login_host: mysql.narendaws-84s.site
+      state: import
+      target: "{{ item }}"
+      loop:
+      - /app/db/schema.sql
+      - /app/db/app-user.sql
+      - /app/db/master-data.sql
+
+  - name: start the service
+    tags: 
+    - import   # we can run required part the of snippet by using the tags
+    ansible.builtin.service:
+      name: shipping
+      state: restarted
+
+    
