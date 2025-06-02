@@ -60,3 +60,5 @@
       state: started
       enabled: yes
   
+ # ansible-playbook -i inventory.ini payment.yaml &>>  /home/ec2-user/paymnet.log & - this is run in background
+    # we can store our logs 
