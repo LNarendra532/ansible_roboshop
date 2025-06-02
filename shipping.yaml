@@ -82,10 +82,10 @@
       login_host: mysql.narendaws-84s.site
       state: import
       target: "{{ item }}"
-      loop:
-      - /app/db/schema.sql
-      - /app/db/app-user.sql
-      - /app/db/master-data.sql
+    loop:
+    - /app/db/schema.sql
+    - /app/db/app-user.sql
+    - /app/db/master-data.sql
 
   - name: start the service
     tags: 
