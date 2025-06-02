@@ -31,5 +31,5 @@
       state: started
       enabled: yes
 
-# ansible-playbook -i inventory.ini redis.yaml &>> /home/ec2-user/redis.log & - this will run in backgroupnd
+#nohup ansible-playbook -i inventory.ini redis.yaml &>> /home/ec2-user/redis.log & - this will run in backgroupnd
     # we can store our logs 

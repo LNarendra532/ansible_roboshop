@@ -32,6 +32,6 @@
   #run the file
   #anible-playbook -i inventory.ini -e ansible_user=ec2_user -e ansible_password=DevOps321 mongodb.yaml 
 
-   # ansible-playbook -i inventory.ini mongodb.yaml &>>  /home/ec2-user/mongo.log & - this is run in background
+   #nohup ansible-playbook -i inventory.ini mongodb.yaml &>>  /home/ec2-user/mongo.log & - this is run in background
     # we can store our logs 
       

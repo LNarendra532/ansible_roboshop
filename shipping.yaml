@@ -95,7 +95,7 @@
       state: restarted
 
 
-  # ansible-playbook -i inventory.ini shipping.yaml &>> /home/ec2-user/shipping.log & - this will run in backgroupnd
+  #nohup ansible-playbook -i inventory.ini shipping.yaml &>> /home/ec2-user/shipping.log & - this will run in backgroupnd
     # we can store our logs 
 
     

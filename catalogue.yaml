@@ -81,7 +81,7 @@
     ansible.builtin.shell: mongosh --host mongodb.narendaws-84s.site < /app/db/master-data.js
     when: catalogue_output.stdout | int < 0
 
-    # ansible-playbook -i inventory.ini catalogue.yaml &>> /home/ec2-user/catalogue.log & - this will run in backgroupnd
+    # nohup ansible-playbook -i inventory.ini catalogue.yaml &>> /home/ec2-user/catalogue.log & - this will run in backgroupnd
     # we can store our logs 
 
 
