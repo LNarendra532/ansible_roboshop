@@ -76,7 +76,7 @@
     tags: 
     - import   # we can run required part the of snippet by using the tags
     community.mysql.mysql_db:
-      name: all #                     name may only be provided if state is dump or import.
+      name: all #                     name should only be provided if state is dump or import.
       login_user: root
       login_password: RoboShop@1
       login_host: mysql.narendaws-84s.site
